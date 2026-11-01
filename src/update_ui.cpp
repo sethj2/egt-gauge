@@ -54,12 +54,14 @@ void update_ui_init() {
 
   lv_obj_t *title = lv_label_create(panel);
   lv_obj_set_style_text_font(title, &lv_font_montserrat_24, 0);
+  lv_obj_set_style_text_color(title, lv_color_white(), 0);
   lv_label_set_text(title, "Firmware update");
   lv_obj_align(title, LV_ALIGN_CENTER, 0, -100);
 
   statusLabel = lv_label_create(panel);
   lv_obj_set_width(statusLabel, 240);
   lv_label_set_long_mode(statusLabel, LV_LABEL_LONG_WRAP);
+  lv_obj_set_style_text_color(statusLabel, lv_color_white(), 0);
   lv_obj_set_style_text_align(statusLabel, LV_TEXT_ALIGN_CENTER, 0);
   lv_obj_align(statusLabel, LV_ALIGN_CENTER, 0, -45);
 
