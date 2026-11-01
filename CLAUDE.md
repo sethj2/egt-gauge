@@ -10,8 +10,9 @@ Arduino framework + LVGL 8.3.10. Windows 11, PowerShell, `arduino-cli` and `gh` 
       Ring is blue, turns red above 1200 F (EGT) / 220 F (CLT). Centre number also turns red there.
 - [x] Faster refresh: dirty-area redraw (`full_refresh = 0`), 16 ms LVGL refresh, 30 Hz updates
 - [x] Wireless updates pulled from GitHub Releases (long-press screen -> "Check for update")
-- [ ] GitHub repo created, first release published (needs `gh auth login`; replace `OWNER` in `src/version.h`)
-- [ ] Flash the OTA-capable firmware over USB once
+- [x] GitHub repo: https://github.com/sethj2/egt-gauge (public, `gh` logged in as sethj2)
+- [x] OTA-capable firmware flashed over USB (Wi-Fi creds from `src/secrets.h` are stored in the board's NVS)
+- [ ] First release v0.1.0 published, then test an update with v0.1.1 (long-press screen -> Check for update)
 - [ ] Real EGT: Adafruit MAX31850K (**1-Wire**, not I2C) + K-type thermocouple on GPIO43/44, 4.7k pull-up to 3.3V,
       OneWire + DallasTemperature libs. Implement as a `Sensors` subclass in `src/sensors.h`.
 - [ ] Real coolant (NTC thermistor, needs part number for the curve) and boost (0.5-4.5 V sensor,
@@ -25,7 +26,10 @@ Arduino framework + LVGL 8.3.10. Windows 11, PowerShell, `arduino-cli` and `gh` 
 - `src/gauge_ui.cpp`: LVGL gauge drawing. Zones/limits/ranges are the `*_ZONES` tables and `Gauge` initialisers at the top.
 - `src/update_ui.cpp`, `src/ota.cpp`: update panel and GitHub OTA. `src/version.h` holds `FW_VERSION` and `GITHUB_REPO`.
 - `src/board.cpp`: init order (I2C -> TCA9554 -> backlight -> LCD+touch -> LVGL). Copy of Waveshare's drivers in `src/drivers/`.
-- `src/secrets.h`: phone hotspot SSID/password. **Gitignored**; template is `src/secrets.example.h`.
+- `src/secrets.h`: phone hotspot SSID/password. **Gitignored**; template is `src/secrets.example.h`. Never edit it on
+  github.com and never print its values (an earlier mistake leaked a hotspot password; history was reset and the password changed).
+  Dev/USB builds copy it into NVS; `release.ps1` builds without it (via a temporary `src/release_build.h`) and refuses to
+  publish if the SSID/password text is found in `firmware.bin`.
 - `config/lv_conf.h`: LVGL config (24/40 pt fonts, 16 ms refresh). Must be copied into the demo's lvgl library, see README.
 - `ESP32-S3-Touch-LCD-1.85-Demo/`: Waveshare demo package (gitignored, third-party). The build uses its `lvgl` copy.
 - `release.ps1 -Version X.Y.Z`: builds, commits the version bump, pushes, creates the GitHub release.

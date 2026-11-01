@@ -3,3 +3,4 @@ build/
 # Waveshare's demo package (third-party, large). Download it from the Waveshare wiki.
 ESP32-S3-Touch-LCD-1.85-Demo/
 src/release_build.h
+.claude/settings.local.json

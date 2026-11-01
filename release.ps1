@@ -36,6 +36,7 @@ foreach ($m in (Select-String -Path src\secrets.h -Pattern '#define WIFI_(SSID|P
 
 # 4. commit the version bump and publish
 git add src\version.h
-git commit -m "Release v$Version"
+git diff --cached --quiet
+if ($LASTEXITCODE -ne 0) { git commit -m "Release v$Version" }
 git push
 gh release create "v$Version" "$dist\firmware.bin" "$dist\version.txt" --title "v$Version" --notes "Firmware v$Version"
